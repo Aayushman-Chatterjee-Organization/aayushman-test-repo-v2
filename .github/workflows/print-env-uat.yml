@@ -28,6 +28,7 @@ jobs:
              echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
              echo "${{vars[env.GCP_CRED_VAR]}}"
+             echo "${{vars[env.ENVIRONMENT + 'GCP_CRED_VAR']}}"
         
 
 
