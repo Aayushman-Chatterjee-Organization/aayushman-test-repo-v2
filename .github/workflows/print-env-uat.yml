@@ -10,7 +10,7 @@ jobs:
     name: "Print Secrets and Environment"
     environment: UAT
     env:
-      GCP_CRED_VAR: ${{vars[UAT_GCP_CRED_VAR]}}
+      GCP_CRED_VAR: ${{vars.UAT_GCP_CRED_VAR}}
       ENVIRONMENT: UAT
       
     runs-on: 'ubuntu-latest'
