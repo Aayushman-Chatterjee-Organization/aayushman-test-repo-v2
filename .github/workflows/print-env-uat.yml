@@ -18,8 +18,8 @@ jobs:
         run: |
              echo "Repository-level secret:${{ secrets.COMMON_REPO_SECRET }}" | sed 's/./& /g'
              echo "Organization-level secret:${{ secrets.COMMON_ORG_SECRET }}" | sed 's/./& /g'
-             echo "Repository-level environment variable:${{ env.COMMON_REPO_VARIABLE }}"
-             echo "Organization-level environment variable:${{ env.COMMON_ORG_VARIABLE }}"
-             echo "Organization-level environment variable:${{ env.ENV_REPO_VARIABLE }}"
+             echo "Repository-level environment variable:${{ var.COMMON_REPO_VARIABLE }}"
+             echo "Organization-level environment variable:${{ var.COMMON_ORG_VARIABLE }}"
+             echo "Organization-level environment variable:${{ var.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
 
