@@ -11,7 +11,7 @@ jobs:
     environment: UAT
     env:
       GCP_CRED_VAR: ${{vars['${{vars.ENV_STAGE}}_GCP_CRED_VAR']}}
-      ENVIRONMENT: UAT
+      ENVIRONMENT: ${{vars.ENV_STAGE}}_GCP_CRED_VAR
       
     runs-on: 'ubuntu-latest'
     steps:
@@ -28,6 +28,7 @@ jobs:
              echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
              echo "${{env.GCP_CRED_VAR}}"
+             echo "${{env.ENVIRONMENT}}"
         
 
 
