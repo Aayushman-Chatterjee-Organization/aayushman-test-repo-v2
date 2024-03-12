@@ -10,7 +10,9 @@ jobs:
     name: "Print Secrets and Environment"
     environment: UAT
     env:
+      GCP_CRED_VAR: UAT_GCP_CRED_VAR
       ENVIRONMENT: UAT
+      
     runs-on: 'ubuntu-latest'
     steps:
       - id: 'code_checkout'
@@ -25,7 +27,7 @@ jobs:
              echo "Organization-level environment variable:${{ vars.COMMON_ORG_VARIABLE }}"
              echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
-             echo "${{vars['UAT_GCP_CRED_VAR']}}"
+             echo "${{vars[${env.GCP_CRED_VAR}]}}"
         
 
 
