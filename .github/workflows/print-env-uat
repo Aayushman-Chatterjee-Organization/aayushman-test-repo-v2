@@ -1,0 +1,23 @@
+name: Print Secrets and Environment UAT
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  job_print_secrets:
+    name: "Print Secrets and Environment"
+    environment: UAT
+    runs-on: 'ubuntu-latest'
+    steps:
+      - id: 'code_checkout'
+        uses: actions/checkout@v3
+      
+      - name: Access Repository-level Secret
+        run: echo "Repository-level secret:${{ secrets.COMMON_REPO_SECRET }}"
+             echo "Organization-level secret:${{ secrets.COMMON_ORG_SECRET }}"
+             echo "Repository-level environment variable:${{ env.COMMON_REPO_VARIABLE }}"
+             echo "Organization-level environment variable:${{ env.COMMON_ORG_VARIABLE }}"
+             echo "Organization-level environment variable:${{ env.ENV_REPO_VARIABLE }}"
+             echo "Organization-level environment variable:${{ env.ENV_REPO_SECRET }}"
