@@ -8,7 +8,7 @@ on:
 jobs:
   job_print_secrets:
     name: "Print Secrets and Environment"
-    environment: ${{vars.ENV_STAGE}}
+    environment: UAT
     runs-on: 'ubuntu-latest'
     steps:
       - id: 'code_checkout'
@@ -22,5 +22,6 @@ jobs:
              echo "Organization-level environment variable:${{ vars.COMMON_ORG_VARIABLE }}"
              echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
+             echo "Github environment: ${{vars.ENV_STAGE}}"
 
 
