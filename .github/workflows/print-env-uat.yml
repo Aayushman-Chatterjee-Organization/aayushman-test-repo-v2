@@ -25,8 +25,7 @@ jobs:
              echo "Organization-level environment variable:${{ vars.COMMON_ORG_VARIABLE }}"
              echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
-             vaariableName = 'UAT_GCP_CRED'
-             echo "Value of MY_SECRET is ${{ !vaariableName }}"
+             echo "${{vars['UAT_GCP_CRED_VAR']}}"
         
 
 
