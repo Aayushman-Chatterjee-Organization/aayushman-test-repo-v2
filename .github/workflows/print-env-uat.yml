@@ -23,6 +23,5 @@ jobs:
              echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
              echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
              echo "Github environment: ${GITHUB_ENVIRONMENT}"
-             # echo "UAT GCP key:${{ secrets[${GITHUB_ENVIRONMENT}_GCP_CRED] }}" | sed 's/./& /g'
-             # echo "UAT GCP key var:${{ vars.${GITHUB_ENVIRONMENT}_GCP_CRED_VAR }}"
+
 
