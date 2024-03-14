@@ -26,8 +26,8 @@ jobs:
           # yarn build-ui-services
           # git clone https://${{env.GIT_CLONE_CREDENTIALS}}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
           # git clone https://${{env.GIT_CLONE_CREDENTIALS}}@github.com/Aayushman-Chatterjee-Organization/aayushman-test-repo-v2.git
-          git clone https://github.com/Aayushman-Chatterjee-Organization/aayushman-test-repo-v2.git
           # cd aiba-component-library
+          cd aayushman-test-repo-v2
           # git checkout -b release_services_uat@v2.1.1 || git checkout release_services_uat@v2.1.1
           cd ..
           ls
