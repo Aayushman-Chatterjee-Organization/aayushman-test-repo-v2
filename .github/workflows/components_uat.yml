@@ -1,0 +1,100 @@
+name: AIBA Components UAT
+
+on:
+  push:
+    branches:
+      - development
+    paths:
+      - "packages/ui-components/src/**"
+
+jobs:
+  job_deploy_components:
+    name: "Deploy AIBA Components"
+    environment: UAT
+    env:
+      GIT_CLONE_USER_MAIL: ${{vars.GIT_CLONE_USER_MAIL}}
+      GIT_CLONE_USER_NAME: ${{vars.GIT_CLONE_USER_NAME}}
+      GIT_CLONE_CREDENTIALS: ${{secrets.GIT_CLONE_CREDENTIALS}}
+    runs-on: "ubuntu-latest"
+    steps:
+      - id: "code_checkout"
+        uses: actions/checkout@v3
+
+      - name: "authorization"
+        uses: "google-github-actions/auth@v1"
+        with:
+          credentials_json: "${{secrets.STAGE_GCP_CREDENTIALS}}"
+
+      - name: "set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: AIBA Components Package Build and Deploy
+        run: |
+          yarn install
+          yarn build
+          git clone https://${{env.GIT_CLONE_CREDENTIALS}}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
+          cd aiba-component-library
+          git checkout release_components_uat@v2.1.1
+          cd ..
+          ls
+          cp packages/ui-components/dist/* aiba-component-library -rf
+          cd aiba-component-library
+          git branch -a
+          ls
+          git config --global user.email ${{env.GIT_CLONE_USER_MAIL}}
+          git config --global user.name ${{env.GIT_CLONE_USER_NAME}}
+          git add .
+          git commit -m "Updated UI Components Library"
+          git push origin release_components_uat@v2.1.1
+          ls
+
+      - name: SonarQube Scan
+        uses: sonarsource/sonarqube-scan-action@master
+        env:
+          SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+          SONAR_HOST_URL: ${{vars.SONAR_HOST_URL}}
+
+      - name: AIBA StoryBook Build & Deploy
+        env:
+          GCS_BUCKET_NAME: ${{vars.GCS_BUCKET_NAME}}
+          GCS_REMOTE_PATH: ${{vars.GCS_REMOTE_PATH}}
+        run: |
+          mkdir -p storybookbuild/${{env.GCS_REMOTE_PATH}}/
+          echo ${{env.GCS_REMOTE_PATH}}
+          yarn install
+          yarn build
+          yarn build-storybook
+          cp -rv ./packages/ui-components/storybook-static/* ./storybookbuild/${{env.GCS_REMOTE_PATH}}
+          ls -ltr
+          ls -ltr storybookbuild
+          gsutil -m rsync -r -d ./storybookbuild/${{env.GCS_REMOTE_PATH}} gs://${{env.GCS_BUCKET_NAME}}/${{env.GCS_REMOTE_PATH}}
+          echo "URL = https://aiba-uat.unileversolutions.com/${{env.GCS_REMOTE_PATH}}/index.html"
+
+      - name: AIBA Unit Test Coverage Report Generation
+        env:
+          GCS_UNIT_TEST_REPORT_PATH: ${{vars.GCS_UNIT_TEST_REPORT_PATH}}
+          GCS_BUCKET_NAME: ${{vars.GCS_BUCKET_NAME}}
+        run: |
+          mkdir -p coveragereport/${{env.GCS_UNIT_TEST_REPORT_PATH}}/
+          echo ${{env.GCS_UNIT_TEST_REPORT_PATH}}
+          apt-get update
+          apt-get install libnss3-dev -y
+          apt-get install libatk-bridge2.0-0 -y
+          apt-get install libdrm2 -y
+          apt-get install libgbm1 -y
+          apt-get install libxkbcommon0 -y
+          apt-get install libasound2 -y
+          apt-get install libcups2 -y
+          apt-get install libxcomposite1 -y
+          apt-get install libxdamage1 -y
+          apt-get install libxrandr2 -y
+          apt-get install libxfixes3 -y
+          yarn install
+          yarn test --silent --coverage -u
+          ls
+          cp -rv ./packages/ui-components/coverage/* ./coveragereport/${{env.GCS_UNIT_TEST_REPORT_PATH}}
+          ls -ltr
+          ls -ltr coveragereport
+          export GCS_UNIT_TEST_REPORT_PATH=${{env.GCS_UNIT_TEST_REPORT_PATH}}
+          gsutil -m rsync -r -d ./coveragereport/${{env.GCS_UNIT_TEST_REPORT_PATH}} gs://${{env.GCS_BUCKET_NAME}}/${{env.GCS_UNIT_TEST_REPORT_PATH}}
+          echo "URL = https://aiba-uat.unileversolutions.com/${{env.GCS_UNIT_TEST_REPORT_PATH}}/lcov-report/index.html"

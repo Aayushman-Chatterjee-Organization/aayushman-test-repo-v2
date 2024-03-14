@@ -1,6 +1,6 @@
 name: Print Secrets and Environment UAT
 
-on: 
+on:
   push:
     branches:
       - main
@@ -12,22 +12,19 @@ jobs:
     env:
       GCP_CRED_VAR: ${{vars['UAT_GCP_CRED_VAR']}}
       ENVIRONMENT: ${{vars.ENV_STAGE}}_GCP_CRED_VAR
-      
-    runs-on: 'ubuntu-latest'
+
+    runs-on: "ubuntu-latest"
     steps:
-      - id: 'code_checkout'
+      - id: "code_checkout"
         uses: actions/checkout@v3
-      
+
       - name: Access Repository-level Secret
-        
+
         run: |
-             echo "Repository-level secret:${{ secrets.COMMON_REPO_SECRET }}" | sed 's/./& /g'
-             echo "Organization-level secret:${{ secrets.COMMON_ORG_SECRET }}" | sed 's/./& /g'
-             echo "Repository-level environment variable:${{ vars.COMMON_REPO_VARIABLE }}"
-             echo "Organization-level environment variable:${{ vars.COMMON_ORG_VARIABLE }}"
-             echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
-             echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
-             echo "${{env.GCP_CRED_VAR}}"
-        
-
-
+          echo "Repository-level secret:${{ secrets.COMMON_REPO_SECRET }}" | sed 's/./& /g'
+          echo "Organization-level secret:${{ secrets.COMMON_ORG_SECRET }}" | sed 's/./& /g'
+          echo "Repository-level environment variable:${{ vars.COMMON_REPO_VARIABLE }}"
+          echo "Organization-level environment variable:${{ vars.COMMON_ORG_VARIABLE }}"
+          echo "Organization-level environment variable:${{ vars.ENV_REPO_VARIABLE }}"
+          echo "Organization-level environment variable:${{ secrets.ENV_REPO_SECRET }}" | sed 's/./& /g'
+          echo "${{env.GCP_CRED_VAR}}"

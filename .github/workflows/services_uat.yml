@@ -1,0 +1,59 @@
+name: AIBA Services UAT
+
+on:
+  push:
+    branches:
+      - development
+    # paths:
+    #   - "packages/ui-services/src/**"
+
+jobs:
+  job_deploy_services:
+    name: "Deploy AIBA Services"
+    environment: UAT
+    env:
+      GIT_CLONE_USER_MAIL: ${{vars.GIT_CLONE_USER_MAIL}}
+      GIT_CLONE_USER_NAME: ${{vars.GIT_CLONE_USER_NAME}}
+      GIT_CLONE_CREDENTIALS: ${{secrets.GIT_CLONE_CREDENTIALS}}
+    runs-on: "ubuntu-latest"
+    steps:
+      - id: "code_checkout"
+        uses: actions/checkout@v3
+
+      - name: AIBA UI Services Package Build and Deploy
+        run: |
+          # yarn install
+          # yarn build-ui-services
+          # git clone https://${{env.GIT_CLONE_CREDENTIALS}}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
+          git clone https://${{env.GIT_CLONE_CREDENTIALS}}@github.com/Aayushman-Chatterjee-Organization/aayushman-test-repo-v2.git
+          # cd aiba-component-library
+          git checkout -b release_services_uat@v2.1.1 || git checkout release_services_uat@v2.1.1
+          cd ..
+          ls
+          # cp packages/ui-services/dist/* aiba-component-library -rf
+          # cp packages/ui-services/dist/* aiba-component-library -rf
+          # cd aiba-component-library
+          git branch -a
+          ls
+          git config --global user.email ${{env.GIT_CLONE_USER_MAIL}}
+          git config --global user.name ${{env.GIT_CLONE_USER_NAME}}
+          if [ $(git show-ref --verify --quiet refs/remotes/origin/release_services_uat@v2.1.1 && echo 1) ]; then
+            echo "[release_services_uat@v2.1.1] Branch exisits"
+            git checkout release_services_uat@v2.1.1
+            git add .
+            git commit -m "Updated UI Services Library"
+            git push origin release_services_uat@v2.1.1
+          else
+            echo "[release_services_uat@v2.1.1] Branch created"
+            git checkout -b release_services_uat@v2.1.1
+            git add .
+            git commit -m "Updated UI Services Library"
+            git push origin release_services_uat@v2.1.1
+          fi
+          ls
+
+      # - name: SonarQube Scan
+      #   uses: sonarsource/sonarqube-scan-action@master
+      #   env:
+      #     SONAR_TOKEN: ${{secrets.SONAR_TOKEN}}
+      #     SONAR_HOST_URL: ${{vars.SONAR_HOST_URL}}
