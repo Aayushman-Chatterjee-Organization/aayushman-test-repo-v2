@@ -71,7 +71,7 @@ jobs:
             # git tag -a v2.1.10 $commit_id -m "v2.1.10 tag added"
             # git push origin v2.1.10 
           fi 
-          ls
+          ls -ltr
         shell: bash
       # - name: Bump version and push tag
       #   id: tag_version
