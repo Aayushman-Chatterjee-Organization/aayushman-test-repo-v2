@@ -30,9 +30,8 @@ jobs:
 
       - name: AIBA Components Package Build and Deploy
         run: |
-          yarn install
-          yarn build
-          git clone https://${{env.GIT_CLONE_CREDENTIALS}}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
+          yarn install && yarn build
+          git clone https://${{ env.GIT_CLONE_CREDENTIALS }}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
           cd aiba-component-library
           git checkout release_components_uat@v2.1.1
           cd ..
@@ -41,12 +40,37 @@ jobs:
           cd aiba-component-library
           git branch -a
           ls
-          git config --global user.email ${{env.GIT_CLONE_USER_MAIL}}
-          git config --global user.name ${{env.GIT_CLONE_USER_NAME}}
+          git config --global user.email ${{ env.GIT_CLONE_USER_MAIL }}
+          git config --global user.name ${{ env.GIT_CLONE_USER_NAME }}
           git add .
           git commit -m "Updated UI Components Library"
+
+          # Generate release notes
+          latest_tag=$(git describe --tags --abbrev=0)
+          commit_messages=$(git log --oneline $latest_tag..HEAD)
+          echo "Release Notes" > release_notes.txt
+          echo "=========================" >> release_notes.txt
+          echo "Latest Tag: $latest_tag" >> release_notes.txt
+          echo "" >> release_notes.txt
+          echo "Changes:" >> release_notes.txt
+          echo "$commit_messages" >> release_notes.txt
+
+          # Create GitHub release
+          tag_name=$(git rev-parse --short HEAD)
+          release_name="Release $tag_name"
+          echo "Creating GitHub release: $release_name"
+          echo "::set-output name=tag_name::$tag_name"
+          echo "::set-output name=release_name::$release_name"
+          echo "::set-output name=release_notes::$(cat release_notes.txt)"
+
+          # Push changes and tag to GitHub
           git push origin release_components_uat@v2.1.1
+          git tag $tag_name
+          git push origin $tag_name
+
           ls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: SonarQube Scan
         uses: sonarsource/sonarqube-scan-action@master
@@ -78,17 +102,7 @@ jobs:
           mkdir -p coveragereport/${{env.GCS_UNIT_TEST_REPORT_PATH}}/
           echo ${{env.GCS_UNIT_TEST_REPORT_PATH}}
           apt-get update
-          apt-get install libnss3-dev -y
-          apt-get install libatk-bridge2.0-0 -y
-          apt-get install libdrm2 -y
-          apt-get install libgbm1 -y
-          apt-get install libxkbcommon0 -y
-          apt-get install libasound2 -y
-          apt-get install libcups2 -y
-          apt-get install libxcomposite1 -y
-          apt-get install libxdamage1 -y
-          apt-get install libxrandr2 -y
-          apt-get install libxfixes3 -y
+          apt-get install libnss3-dev libatk-bridge2.0-0 libdrm2 libgbm1 libxkbcommon0 libasound2 libcups2 libxcomposite1 libxdamage1 libxrandr2 libxfixes3 -y
           yarn install
           yarn test --silent --coverage -u
           ls

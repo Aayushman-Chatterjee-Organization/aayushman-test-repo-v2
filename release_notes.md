@@ -1,17 +1,24 @@
-# 🎁 Release notes (`v4.2.42`)
+# 🎁 Release notes (`v5.0.0`)
 
-## Changes
-- Feature/ganesh (#5)
-- Feature/shubesh (#4)
-- feat: testing bash in actions
-- fix : testing exisitng branch code v2
-- fix : testing exisitng branch code
-- fix: added tags in pipeline
-- Feature/test tagss (#3)
+## 🎉 New Features
+
+- feat: added fix v2
+- feat: added fix
+- feat: added ltr
+- feat : ujhndkjfbnsdkj
+- feat: aded package in main v2
+- feat: aded package in main
+- feat: added package.json
+
+## 🐛 Bugfixes
+
+- fix/added-v1-v2 (#6)
+- fix : hi there
 
 ## Metadata
+
 ```
-This version -------- v4.2.42
-Previous version ---- v3.0.0
-Total commits -------        7
+This version -------- v5.0.0
+Previous version ---- v4.2.42
+Total commits -------       21
 ```

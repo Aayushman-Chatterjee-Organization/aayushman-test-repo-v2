@@ -1,0 +1,8 @@
+name: AIBA Services UAT
+
+on:
+  push:
+    branches:
+      - development
+    # paths:
+    #   - "packages/ui-services/src/**"
