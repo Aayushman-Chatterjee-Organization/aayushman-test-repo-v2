@@ -51,21 +51,20 @@ jobs:
           git branch -a
           ls
 
-          # if git rev-parse --verify --quiet release_services_uat@v2.1.2 > /dev/null; then
-          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.2; then
-            echo "[release_services_uat@v2.1.2] Branch exists"
-            git checkout release_services_uat@v2.1.2
-            git pull origin release_services_uat@v2.1.2
+          # if git rev-parse --verify --quiet release_services_uat@v2.1.3 > /dev/null; then
+          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.3; then
+            echo "[release_services_uat@v2.1.3] Branch exists"
+            git checkout release_services_uat@v2.1.3
+            git pull origin release_services_uat@v2.1.3
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.2
+            git push origin release_services_uat@v2.1.3
           else
-            echo "[release_services_uat@v2.1.2] Branch created"
-            git checkout -b release_services_uat@v2.1.2
-            git pull origin release_services_uat@v2.1.2
+            echo "[release_services_uat@v2.1.3] Branch created"
+            git checkout -b release_services_uat@v2.1.3
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.2
+            git push origin release_services_uat@v2.1.3
           fi
           ls
 
