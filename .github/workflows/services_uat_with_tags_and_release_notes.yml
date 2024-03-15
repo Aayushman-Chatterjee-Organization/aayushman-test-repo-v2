@@ -51,20 +51,20 @@ jobs:
           git branch -a
           ls
 
-          # if git rev-parse --verify --quiet release_services_uat@v2.1.4 > /dev/null; then
-          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.4; then
-            echo "[release_services_uat@v2.1.4] Branch exists"
-            git checkout release_services_uat@v2.1.4
-            git pull origin release_services_uat@v2.1.4
+          # if git rev-parse --verify --quiet release_services_uat@v2.1.5 > /dev/null; then
+          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.5; then
+            echo "[release_services_uat@v2.1.5] Branch exists"
+            git checkout release_services_uat@v2.1.5
+            git pull origin release_services_uat@v2.1.5
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.4
+            git push origin release_services_uat@v2.1.5
           else
-            echo "[release_services_uat@v2.1.4] Branch created"
-            git checkout -b release_services_uat@v2.1.4
+            echo "[release_services_uat@v2.1.5] Branch created"
+            git checkout -b release_services_uat@v2.1.5
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.4
+            git push origin release_services_uat@v2.1.5
           fi
           ls
 
@@ -73,9 +73,11 @@ jobs:
         run: |
           # Get the latest tag
           latest_tag=$(git describe --tags --abbrev=0)
+          echo "latest_tag: ${latest_tag}"
 
           # Get commit messages since the last tag
           commit_messages=$(git log --oneline $latest_tag..HEAD)
+          echo "commit_messages: ${commit_messages}"
 
           # Generate release notes
           echo "Release Notes" > release_notes.txt
