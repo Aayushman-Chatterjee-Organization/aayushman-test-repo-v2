@@ -44,7 +44,7 @@ jobs:
           # cd aayushman-test-repo-v2
 
           # git checkout -b release_services_uat@v2.1.1 || git checkout release_services_uat@v2.1.1
-          # cd ..
+          # cd .. 
           ls
           # cp packages/ui-services/dist/* aiba-component-library -rf
           # cp packages/ui-services/dist/* aiba-component-library -rf
