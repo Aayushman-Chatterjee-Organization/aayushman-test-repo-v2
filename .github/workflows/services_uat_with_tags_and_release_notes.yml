@@ -56,7 +56,7 @@ jobs:
             echo "[release_services_uat@v2.1.9] Branch exists"
             git checkout release_services_uat@v2.1.9
             git pull origin release_services_uat@v2.1.9
-            git add .
+            git add . 
             git commit -m "Updated UI Services Library"
             git push origin release_services_uat@v2.1.9
             commit_id=$(git rev-parse HEAD)
