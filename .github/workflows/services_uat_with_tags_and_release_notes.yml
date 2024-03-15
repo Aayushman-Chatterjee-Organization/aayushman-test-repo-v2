@@ -51,26 +51,26 @@ jobs:
           git branch -a
           ls
 
-          # if git rev-parse --verify --quiet release_services_uat@v2.1.8 > /dev/null; then
-          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.8; then
-            echo "[release_services_uat@v2.1.8] Branch exists"
-            git checkout release_services_uat@v2.1.8
-            git pull origin release_services_uat@v2.1.8
+          # if git rev-parse --verify --quiet release_services_uat@v2.1.9 > /dev/null; then
+          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.9; then
+            echo "[release_services_uat@v2.1.9] Branch exists"
+            git checkout release_services_uat@v2.1.9
+            git pull origin release_services_uat@v2.1.9
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.8
+            git push origin release_services_uat@v2.1.9
             commit_id=$(git rev-parse HEAD)
-            git tag -a v2.1.8 $commit_id -m "v2.1.8 tag added"
-            git push origin v2.1.8
+            git tag -a v2.1.9 $commit_id -m "v2.1.9 tag added"
+            git push origin v2.1.9
           else
-            echo "[release_services_uat@v2.1.8] Branch created"
-            git checkout -b release_services_uat@v2.1.8
+            echo "[release_services_uat@v2.1.9] Branch created"
+            git checkout -b release_services_uat@v2.1.9
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.8
+            git push origin release_services_uat@v2.1.9
             commit_id=$(git rev-parse HEAD)
-            git tag -a v2.1.8 $commit_id -m "v2.1.8 tag added"
-            git push origin v2.1.8
+            git tag -a v2.1.9 $commit_id -m "v2.1.9 tag added"
+            git push origin v2.1.9
           fi
           ls
 
