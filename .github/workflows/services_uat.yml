@@ -4,8 +4,8 @@ on:
   push:
     branches:
       - development
-    # paths:
-    #   - "packages/ui-services/src/**"
+    paths:
+      - "packages/ui-services/src/**"
 
 jobs:
   job_deploy_services:
@@ -28,31 +28,31 @@ jobs:
       - name: Clone Repository
         run: |
           git clone https://github.com/Aayushman-Chatterjee-Organization/aayushman-test-repo-v2.git temp_repo
+          # git clone https://${{ env.GIT_CLONE_CREDENTIALS }}@github.com/UL-AIBA/aiba-component-library.git temp_repo
           cd temp_repo
 
       - name: AIBA UI Services Package Build and Deploy
-        # uses: actions/labeler@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GIT_CLONE_CREDENTIALS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # yarn install
           # yarn build-ui-services
-          # git clone https://${{env.GIT_CLONE_CREDENTIALS}}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
-          # git clone https://${{env.GIT_CLONE_CREDENTIALS}}@github.com/Aayushman-Chatterjee-Organization/aayushman-test-repo-v2.git
+          # git clone https://${{ env.GIT_CLONE_CREDENTIALS }}@bitbucket.org/avinash_digital20_platform/aiba-component-library.git
+          # git clone https://${{ env.GIT_CLONE_CREDENTIALS }}@github.com/UL-AIBA/aiba-component-library.git
           # git clone https://github.com/Aayushman-Chatterjee-Organization/aayushman-test-repo-v2.git
           # cd aiba-component-library 
           # cd aayushman-test-repo-v2
-
-          # git checkout -b release_services_uat@v2.1.1 || git checkout release_services_uat@v2.1.1
           # cd .. 
+
           ls
-          # cp packages/ui-services/dist/* aiba-component-library -rf
           # cp packages/ui-services/dist/* aiba-component-library -rf
           # cd aiba-component-library
+
           git branch -a
           ls
+
           if [ $(git show-ref --verify --quiet refs/remotes/origin/release_services_uat@v2.1.1 && echo 1) ]; then
-            echo "[release_services_uat@v2.1.1] Branch exisits"
+            echo "[release_services_uat@v2.1.1] Branch exists"
             git checkout release_services_uat@v2.1.1
             git add .
             git commit -m "Updated UI Services Library"
@@ -65,6 +65,27 @@ jobs:
             git push origin release_services_uat@v2.1.1
           fi
           ls
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v2.1.1
+          release_name: Release v2.1.1
+          body: |
+            Release notes for v2.1.1
+            - Added new features
+            - Fixed bugs
+
+      - name: Tag Commit
+        run: git tag -a v2.1.1 -m "Version 2.1.1"
+        if: success()
+
+      - name: Push Tags
+        run: git push origin v2.1.1
+        if: success()
 
       # - name: SonarQube Scan
       #   uses: sonarsource/sonarqube-scan-action@master
