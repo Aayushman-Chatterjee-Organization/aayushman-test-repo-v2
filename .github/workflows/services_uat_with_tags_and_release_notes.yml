@@ -54,7 +54,7 @@ jobs:
           # if git rev-parse --verify --quiet release_services_uat@v2.1.9 > /dev/null; then
           if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.9; then
             echo "[release_services_uat@v2.1.9] Branch exists"
-            git checkout release_services_uat@v2.1.9
+            git checkout release_services_uat@v2.1.9 
             git pull origin release_services_uat@v2.1.9
             git add . 
             git commit -m "Updated UI Services Library"
