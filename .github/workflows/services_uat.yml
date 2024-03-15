@@ -51,6 +51,8 @@ jobs:
           git branch -a
           ls
 
+          git rev-parse --verify --quiet release_services_uat@v2.1.1 > /dev/null
+
           if git rev-parse --verify --quiet release_services_uat@v2.1.1 > /dev/null; then
             echo "[release_services_uat@v2.1.1] Branch exists"
             git checkout release_services_uat@v2.1.1
