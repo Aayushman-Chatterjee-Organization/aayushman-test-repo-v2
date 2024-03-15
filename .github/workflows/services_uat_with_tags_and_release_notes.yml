@@ -71,7 +71,7 @@ jobs:
             commit_id=$(git rev-parse HEAD)
             git tag -a v2.1.9 $commit_id -m "v2.1.9 tag added"
             git push origin v2.1.9
-          fi
+          fi 
           ls
 
       # - name: SonarQube Scan
