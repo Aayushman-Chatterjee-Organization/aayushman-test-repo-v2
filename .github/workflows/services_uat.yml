@@ -54,6 +54,7 @@ jobs:
           if [ $(git show-ref --verify --quiet refs/remotes/origin/release_services_uat@v2.1.1 && echo 1) ]; then
             echo "[release_services_uat@v2.1.1] Branch exists"
             git checkout release_services_uat@v2.1.1
+            git pull origin release_services_uat@v2.1.1
             git add .
             git commit -m "Updated UI Services Library"
             git push origin release_services_uat@v2.1.1
