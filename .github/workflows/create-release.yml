@@ -17,8 +17,8 @@ jobs:
         id: changelog
         uses: loopwerk/tag-changelog@v1
         with:
-          token: ${{secrets.GIT_CLONE_CREDENTIALS}}
-          exclude_types: other,doc,chore
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config_file: .github/tag-changelog-config.js
 
       - name: Create release
         uses: actions/create-release@latest
