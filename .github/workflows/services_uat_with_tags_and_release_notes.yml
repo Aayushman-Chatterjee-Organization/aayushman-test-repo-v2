@@ -51,72 +51,28 @@ jobs:
           git branch -a
           ls
 
-          # if git rev-parse --verify --quiet release_services_uat@v2.1.6 > /dev/null; then
-          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.6; then
-            echo "[release_services_uat@v2.1.6] Branch exists"
-            git checkout release_services_uat@v2.1.6
-            git pull origin release_services_uat@v2.1.6
+          # if git rev-parse --verify --quiet release_services_uat@v2.1.7 > /dev/null; then
+          if git show-ref --verify --quiet refs/heads/release_services_uat@v2.1.7; then
+            echo "[release_services_uat@v2.1.7] Branch exists"
+            git checkout release_services_uat@v2.1.7
+            git pull origin release_services_uat@v2.1.7
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.6
+            git push origin release_services_uat@v2.1.7
+            commit_id=$(git rev-parse HEAD)
+            git tag -a v2.1.7 $commit_id -m "v2.1.7 tag added"
+            git push origin v2.1.7
           else
-            echo "[release_services_uat@v2.1.6] Branch created"
-            git checkout -b release_services_uat@v2.1.6
+            echo "[release_services_uat@v2.1.7] Branch created"
+            git checkout -b release_services_uat@v2.1.7
             git add .
             git commit -m "Updated UI Services Library"
-            git push origin release_services_uat@v2.1.6
+            git push origin release_services_uat@v2.1.7
+            commit_id=$(git rev-parse HEAD)
+            git tag -a v2.1.7 $commit_id -m "v2.1.7 tag added"
+            git push origin v2.1.7
           fi
           ls
-      - name: Create changelog text
-        id: changelog
-        uses: loopwerk/tag-changelog@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          exclude_types: other,doc,chore
-
-      - name: Create release
-        uses: actions/create-release@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: ${{ steps.changelog.outputs.changes }}
-
-      # - name: Generate Release Notes
-      #   id: release_notes
-      #   run: |
-      #     # Get the latest tag
-      #     latest_tag=$(git describe --tags --abbrev=0)
-      #     echo "latest_tag: ${latest_tag}"
-
-      #     # Get commit messages since the last tag
-      #     commit_messages=$(git log --oneline $latest_tag..HEAD)
-      #     echo "commit_messages: ${commit_messages}"
-
-      #     # Generate release notes
-      #     echo "Release Notes" > release_notes.txt
-      #     echo "=========================" >> release_notes.txt
-      #     echo "Latest Tag: $latest_tag" >> release_notes.txt
-      #     echo "" >> release_notes.txt
-      #     echo "Changes:" >> release_notes.txt
-      #     echo "$commit_messages" >> release_notes.txt
-
-      # - name: Create Release
-      #   id: create_release
-      #   uses: actions/create-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{secrets.GIT_CLONE_CREDENTIALS}}
-      #   with:
-      #     tag_name: ${{ github.sha }}
-      #     release_name: Release ${{ github.sha }}
-      #     body_path: release_notes.txt
-      #     draft: false
-      #     prerelease: false
-
-      # - name: Tag Commit
-      #   if: steps.create_release.outputs.upload_url != ''
-      #   run: git tag ${{ github.sha }} && git push --tags
 
       # - name: SonarQube Scan
       #   uses: sonarsource/sonarqube-scan-action@master
